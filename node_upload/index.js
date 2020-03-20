@@ -1,7 +1,7 @@
-var expess = require("express");
+var express = require("express");
 var bodyParser = require("body-parser");
 var fs = require("fs");
-var app = expess();
+var app = express();
 
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.post("/image", function(req, res){

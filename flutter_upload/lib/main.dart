@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:uploadfoto/signature_main.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,12 +26,19 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      initialRoute: MyHomePage.ROUTE_NAME,
+      routes: {
+        MyHomePage.ROUTE_NAME: (_) =>
+            MyHomePage(title: 'Flutter Demo Home Page'),
+        SignatureApp.ROUTE_NAME: (_) => SignatureApp()
+      },
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  static const ROUTE_NAME = 'upload';
+
   MyHomePage({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -66,8 +74,6 @@ class _MyHomePageState extends State<MyHomePage> {
     if (file == null) return;
     String base64Image = base64Encode(file.readAsBytesSync());
     String fileName = file.path.split("/").last;
-    print(file.path);
-    print(file.path.split('/').last);
 
     http.post(nodeEndPoint, body: {
       "image": base64Image,
@@ -104,7 +110,13 @@ class _MyHomePageState extends State<MyHomePage> {
               )
             ],
           ),
-          file == null ? Text('No Image Selected') : Image.file(file)
+          file == null ? Text('No Image Selected') : Image.file(file),
+          RaisedButton(
+            onPressed: () {
+              Navigator.popAndPushNamed(context, SignatureApp.ROUTE_NAME);
+            },
+            child: Text("Signature"),
+          )
         ],
       ),
     );
